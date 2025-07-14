@@ -1,0 +1,25 @@
+{
+    "intents": [
+      {
+        "tag": "greeting",
+        "patterns": ["hi", "hello", "hey", "how are you?", "good morning"],
+        "responses": ["Hello!", "Hi there!", "Hey! How can I help you?"]
+      },
+      {
+        "tag": "summary",
+        "patterns": ["summarize this", "give me a summary", "what is this about?", "summarise", "sumarise", "give summary", "brief summary"],
+        "responses": ["Sure! Here's a summary of your document."]
+      },
+      {
+        "tag": "key_points",
+        "patterns": ["list key points", "main takeaways", "give me the highlights"],
+        "responses": ["Here are the key points from your document:"]
+      },
+      {
+        "tag": "quiz",
+        "patterns": ["generate a quiz", "make a quiz", "test my knowledge"],
+        "responses": ["Here's a quiz based on your document."]
+      }
+    ]
+  }
+  

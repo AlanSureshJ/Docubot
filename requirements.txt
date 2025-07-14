@@ -1,0 +1,13 @@
+Flask
+transformers
+torch
+nltk
+spacy
+pypdf
+sumy
+fuzzywuzzy
+python-Levenshtein
+pillow
+opencv-python
+pytesseract
+numpy
