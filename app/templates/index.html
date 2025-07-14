@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docubot</title>
+    <meta name="description" content="Transform your PDF documents into interactive conversations with AI" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-morphism {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-pulse-soft {
+            animation: pulse-soft 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .chat-message {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .upload-zone {
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover {
+            transform: scale(1.02);
+        }
+        
+        .upload-zone.dragover {
+            transform: scale(1.05);
+            border-color: #8b5cf6;
+            background-color: rgba(139, 92, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"></div>
+    
+    <!-- Main Container -->
+    <div class="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="relative animate-float">
+                    <i data-lucide="file-text" class="w-12 h-12 text-blue-400"></i>
+                    <i data-lucide="sparkles" class="w-6 h-6 text-yellow-400 absolute -top-1 -right-1 animate-pulse-soft"></i>
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold gradient-text">
+                    Docubot AI
+                </h1>
+            </div>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                Transform your PDF documents into interactive conversations. Upload, analyze, and extract insights with the power of AI.
+            </p>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="glass-morphism rounded-2xl p-8 shadow-2xl mb-12">
+            <!-- Upload Section -->
+            <div id="upload-section" class="space-y-8">
+                <div class="text-center">
+                    <i data-lucide="upload" class="w-16 h-16 text-blue-400 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-semibold text-white mb-2">Get Started</h2>
+                    <p class="text-gray-300">Upload your PDF document to begin the AI analysis</p>
+                </div>
+                
+                <!-- Upload Zone -->
+                <div id="upload-zone" class="upload-zone border-2 border-dashed border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-purple-400 hover:bg-gray-800">
+                    <input type="file" id="pdf-input" accept=".pdf" class="hidden">
+                    <div id="upload-content">
+                        <i data-lucide="file-plus" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                        <p class="text-lg font-medium text-gray-200 mb-2">
+                            <span id="upload-text">Drop your PDF here or click to browse</span>
+                        </p>
+                        <p class="text-sm text-gray-400">Supports PDF files up to 50MB</p>
+                    </div>
+                    <div id="upload-progress" class="hidden">
+                        <div class="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p class="text-lg font-medium text-blue-400">Processing your PDF...</p>
+                        <p class="text-sm text-gray-400">Analyzing content with AI</p>
+                    </div>
+                </div>
+
+                <!-- Features Info -->
+                <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="info" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                        <div class="text-sm text-gray-200">
+                            <p class="font-medium mb-1">Supported Features:</p>
+                            <ul class="space-y-1 text-gray-300">
+                                <li>• Text extraction and analysis</li>
+                                <li>• Handwritten text recognition (OCR)</li>
+                                <li>• Image analysis and description</li>
+                                <li>• Document summarization</li>
+                                <li>• Interactive Q&A</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Section -->
+            <div id="chat-section" class="hidden space-y-6">
+                <!-- Document Status -->
+                <div class="flex items-center justify-between p-4 bg-green-900 rounded-lg border border-green-700">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-800 rounded-full flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-green-300">Document Ready</p>
+                            <p id="file-name" class="text-sm text-green-400">document.pdf</p>
+                        </div>
+                    </div>
+                    <button onclick="resetUpload()" class="text-green-400 hover:text-green-300 transition-colors">
+                        Upload New
+                    </button>
+                </div>
+
+                <!-- Chat Interface -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-lg font-semibold text-white">
+                        <i data-lucide="message-square" class="w-6 h-6 text-blue-400"></i>
+                        Chat with your Document
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-sm">
+                        <div id="chat-messages" class="h-96 overflow-y-auto p-4 space-y-4">
+                            <!-- Messages will be added here -->
+                        </div>
+
+                        <!-- Chat Input -->
+                        <div class="border-t border-gray-700 p-4">
+                            <div class="flex gap-2">
+                                <input
+                                    type="text"
+                                    id="chat-input"
+                                    placeholder="Ask a question about your document..."
+                                    class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                                    onkeypress="handleKeyPress(event)"
+                                >
+                                <button
+                                    onclick="sendMessage()"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                >
+                                    <i data-lucide="send" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-400">
+                                Try asking: "Summarize this document" or "Generate a quiz from this content"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-blue-400 mb-4">
+                    <i data-lucide="brain" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">AI-Powered Analysis</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">Advanced AI analyzes your PDFs with deep understanding and context awareness</p>
+            </div>
+
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-blue-400 mb-4">
+                    <i data-lucide="search" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">OCR Technology</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">Extract text from handwritten notes and images with precision</p>
+            </div>
+
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-blue-400 mb-4">
+                    <i data-lucide="zap" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">Instant Insights</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">Get summaries, generate quizzes, and ask questions in real-time</p>
+            </div>
+
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-blue-400 mb-4">
+                    <i data-lucide="shield" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">Secure Processing</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">Your documents are processed securely with enterprise-grade protection</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        let isFileUploaded = false;
+        let currentFileName = '';
+
+        // File upload functionality
+        const uploadZone = document.getElementById('upload-zone');
+        const pdfInput = document.getElementById('pdf-input');
+        const uploadSection = document.getElementById('upload-section');
+        const chatSection = document.getElementById('chat-section');
+
+        // Click to upload
+        uploadZone.addEventListener('click', () => {
+            pdfInput.click();
+        });
+
+        // Drag and drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            if (files.length > 0 && files[0].type === 'application/pdf') {
+                handleFileUpload(files[0]);
+            } else {
+                showError('Please upload a valid PDF file.');
+            }
+        });
+
+        // File input change
+        pdfInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFileUpload(file);
+            }
+        });
+
+function handleFileUpload(file) {
+    if (file.size > 50 * 1024 * 1024) {
+        showError('File size must be less than 50MB.');
+        return;
+    }
+
+    currentFileName = file.name;
+    document.getElementById('upload-content').classList.add('hidden');
+    document.getElementById('upload-progress').classList.remove('hidden');
+
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.redirect) {
+            uploadSection.classList.add('hidden');
+            chatSection.classList.remove('hidden');
+            document.getElementById('file-name').textContent = currentFileName;
+
+            addMessage('AI', '✅ PDF processed successfully! You can now chat, summarize, or generate a quiz.');
+            isFileUploaded = true;
+        } else {
+            showError('Failed to process PDF.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showError('Server error while uploading.');
+    });
+}
+        function resetUpload() {
+            uploadSection.classList.remove('hidden');
+            chatSection.classList.add('hidden');
+            document.getElementById('upload-content').classList.remove('hidden');
+            document.getElementById('upload-progress').classList.add('hidden');
+            document.getElementById('chat-messages').innerHTML = '';
+            pdfInput.value = '';
+            isFileUploaded = false;
+            currentFileName = '';
+        }
+
+        function showError(message) {
+            // Simple error handling - you can enhance this
+            alert(message);
+        }
+
+        // Chat functionality
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+    const chatInput = document.getElementById('chat-input');
+    const message = chatInput.value.trim();
+    
+    if (!message) return;
+
+    // Add user message
+    addMessage('User', message);
+    chatInput.value = '';
+
+    // Add typing indicator
+    addTypingIndicator();
+
+    const endpoint = isFileUploaded ? '/ask' : '/chat';
+    const payload = isFileUploaded ? { question: message } : { message: message };
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        removeTypingIndicator();
+        const reply = isFileUploaded ? data.answer : data.response;
+        addMessage('AI', reply || 'Sorry, no response was generated.');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        removeTypingIndicator();
+        addMessage('AI', 'Server error. Please try again later.');
+    });
+}
+
+
+        function addMessage(sender, text) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message flex gap-3 ' + (sender === 'User' ? 'justify-end' : 'justify-start');
+
+            const isUser = sender === 'User';
+            const avatar = isUser ? 'user' : 'bot';
+            const bgColor = isUser ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-200';
+
+            messageDiv.innerHTML = `
+                ${!isUser ? `<div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="${avatar}" class="w-4 h-4 text-blue-400"></i>
+                </div>` : ''}
+                <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${bgColor}">
+                    <p class="text-sm whitespace-pre-wrap">${text}</p>
+                    <p class="text-xs mt-1 ${isUser ? 'text-blue-200' : 'text-gray-400'}">
+                        ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                </div>
+                ${isUser ? `<div class="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                </div>` : ''}
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            lucide.createIcons();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addTypingIndicator() {
+            const chatMessages = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'chat-message flex gap-3 justify-start';
+            typingDiv.innerHTML = `
+                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                    <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
+                </div>
+                <div class="bg-gray-700 px-4 py-2 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-sm text-gray-300">AI is thinking...</span>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            lucide.createIcons();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function generateSampleResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('summarize') || lowerMessage.includes('summary')) {
+                return `Here's a summary of your document:\n\nThe document contains important information about the main topics discussed. Key points include:\n\n• Primary concept explanations\n• Supporting data and examples\n• Conclusions and recommendations\n\nThe document is well-structured and provides comprehensive coverage of the subject matter.`;
+            }
+            
+            if (lowerMessage.includes('quiz') || lowerMessage.includes('question')) {
+                return `Here's a quiz based on your document:\n\n1. What is the main topic discussed in the document?\n   A) Topic A\n   B) Topic B\n   C) Topic C\n   D) Topic D\n\n2. Which of the following is mentioned as a key point?\n   A) Point 1\n   B) Point 2\n   C) Point 3\n   D) All of the above\n\nWould you like me to generate more questions or provide the answers?`;
+            }
+            
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return `Hello! I'm here to help you analyze your PDF document. You can ask me to:\n\n• Summarize the content\n• Generate quiz questions\n• Answer specific questions about the document\n• Extract key information\n\nWhat would you like to know?`;
+            }
+            
+            // Default response
+            return `I understand you're asking about "${message}". Based on the document you've uploaded, I can provide relevant information and insights. However, since this is a demo version, I'm showing sample responses. In the full version, I would analyze your actual PDF content using AI to provide accurate answers.`;
+        }
+    </script>
+</body>
+</html>
